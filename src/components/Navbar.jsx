@@ -1,118 +1,170 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, Sprout } from "lucide-react";
+import { Phone, MapPin } from "lucide-react"; // Removed ShoppingBag import
+import logo from "../assets/header-logo.png";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navigation = [
     { name: "Home", href: "/" },
     { name: "Catalog", href: "/products" },
     { name: "Services", href: "/services" },
-    { name: "Locations", href: "/contact" },
+    { name: "Visit Us", href: "/contact" },
   ];
 
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="bg-white border-b border-ash-grey-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          {/* Logo Section */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="bg-olive-leaf-100 p-2 rounded-md group-hover:bg-olive-leaf-200 transition-colors">
-                <Sprout
-                  className="h-6 w-6 text-olive-leaf-700"
-                  strokeWidth={1.5}
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-lg text-ash-grey-900 leading-tight tracking-tight">
-                  Spinyard
-                </span>
-                <span className="text-[10px] uppercase tracking-wider text-olive-leaf-700 font-medium">
-                  Seedlings
-                </span>
-              </div>
-            </Link>
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:space-x-8">
-            {navigation.map((item) => (
+    <>
+      <nav
+        className={`fixed w-full z-50 transition-all duration-300 font-sans ${
+          scrolled
+            ? "bg-soft-linen-50/95 backdrop-blur-sm border-b border-olive-leaf-600/10 py-2 shadow-sm"
+            : "bg-soft-linen-50 border-b border-transparent py-2 md:py-4"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center">
+            {/* 1. BRANDING */}
+            <div className="flex-shrink-0 flex items-center">
               <Link
-                key={item.name}
-                to={item.href}
-                className={`text-sm font-medium transition-colors duration-200 border-b-2 py-1 ${
-                  isActive(item.href)
-                    ? "border-olive-leaf-600 text-ash-grey-900"
-                    : "border-transparent text-ash-grey-600 hover:text-olive-leaf-700 hover:border-olive-leaf-300"
-                }`}
+                to="/"
+                className="flex items-center gap-3"
+                onClick={() => setIsOpen(false)}
               >
-                {item.name}
+                <img
+                  src={logo}
+                  alt="Spinyard"
+                  className={`w-auto object-contain transition-all duration-300 ${
+                    scrolled ? "h-10 md:h-16" : "h-12 md:h-20"
+                  }`}
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    e.target.nextSibling.style.display = "flex";
+                  }}
+                />
+                <div className="hidden flex-col">
+                  <span className="font-extrabold text-xl text-ash-grey-900 leading-none">
+                    Spinyard
+                  </span>
+                </div>
               </Link>
-            ))}
-          </div>
+            </div>
 
-          {/* Call to Action (Desktop) */}
-          <div className="hidden md:flex md:items-center">
-            <a
-              href="tel:+263772209434"
-              className="inline-flex items-center gap-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-olive-leaf-700 hover:bg-olive-leaf-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-olive-leaf-500 transition-colors shadow-sm"
-            >
-              <Phone className="h-4 w-4" />
-              <span>Call Now</span>
-            </a>
-          </div>
+            {/* 2. DESKTOP NAVIGATION */}
+            <div className="hidden md:flex items-center gap-8">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`text-sm font-bold uppercase tracking-wider transition-colors duration-200 ${
+                    isActive(item.href)
+                      ? "text-olive-leaf-600"
+                      : "text-ash-grey-500 hover:text-ash-grey-900"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex items-center md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-ash-grey-500 hover:text-olive-leaf-700 hover:bg-ash-grey-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-olive-leaf-500"
-              aria-expanded="false"
-            >
-              <span className="sr-only">Open main menu</span>
-              {isOpen ? (
-                <X className="block h-6 w-6" aria-hidden="true" />
-              ) : (
-                <Menu className="block h-6 w-6" aria-hidden="true" />
-              )}
-            </button>
+            {/* 3. ACTIONS */}
+            <div className="flex items-center gap-4">
+              {/* DESKTOP: Order Button */}
+              <a
+                href="https://wa.me/263772209434"
+                className="hidden md:inline-flex items-center gap-2 px-6 py-2.5 bg-ash-grey-900 text-white text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-olive-leaf-600 transition-colors shadow-md"
+              >
+                <span>Order Now</span>
+              </a>
+
+              {/* MOBILE: "CATALOG" LINK (Text Only - No Icon) */}
+              <Link
+                to="/products"
+                className="md:hidden flex items-center text-xs font-black uppercase tracking-widest text-olive-leaf-600 bg-olive-leaf-50 px-3 py-2 rounded-md border border-olive-leaf-100"
+              >
+                Catalog
+              </Link>
+
+              {/* MOBILE: CUSTOM TOGGLE */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="md:hidden p-2 text-ash-grey-900 hover:text-olive-leaf-600 focus:outline-none group"
+                aria-label="Toggle menu"
+              >
+                <div className="w-8 h-8 flex flex-col justify-center items-end gap-1.5 relative">
+                  <span
+                    className={`h-[2.5px] bg-current rounded-full transition-all duration-300 ease-out ${
+                      isOpen
+                        ? "w-6 absolute top-1/2 -translate-y-1/2 rotate-45"
+                        : "w-6"
+                    }`}
+                  />
+                  <span
+                    className={`h-[2.5px] bg-current rounded-full transition-all duration-300 ease-out ${
+                      isOpen
+                        ? "w-6 absolute top-1/2 -translate-y-1/2 -rotate-45"
+                        : "w-4 group-hover:w-6"
+                    }`}
+                  />
+                </div>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile Menu Panel */}
+      {/* MOBILE MENU OVERLAY */}
       {isOpen && (
-        <div className="md:hidden bg-ash-grey-50 border-t border-ash-grey-200">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <div className="fixed inset-0 z-40 bg-soft-linen-50 pt-28 px-6 font-sans animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="flex flex-col space-y-8">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
                 onClick={() => setIsOpen(false)}
-                className={`block px-3 py-3 rounded-md text-base font-medium ${
+                className={`text-3xl font-bold tracking-tight ${
                   isActive(item.href)
-                    ? "bg-olive-leaf-50 text-olive-leaf-700"
-                    : "text-ash-grey-700 hover:bg-white hover:text-olive-leaf-700"
+                    ? "text-olive-leaf-600"
+                    : "text-ash-grey-900"
                 }`}
               >
                 {item.name}
               </Link>
             ))}
-            <a
-              href="tel:+263772209434"
-              className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 border border-transparent text-base font-medium rounded-md text-white bg-olive-leaf-700 hover:bg-olive-leaf-800"
-            >
-              <Phone className="h-5 w-5" />
-              Call Agronomist
-            </a>
+
+            <hr className="border-ash-grey-200 w-20" />
+
+            <div className="flex flex-col gap-4">
+              <a
+                href="tel:+263772209434"
+                className="flex items-center gap-3 text-lg font-medium text-ash-grey-600"
+              >
+                <Phone size={20} className="text-olive-leaf-600" />
+                0772 209 434
+              </a>
+              <a
+                href="/contact"
+                className="flex items-center gap-3 text-lg font-medium text-ash-grey-600"
+              >
+                <MapPin size={20} className="text-olive-leaf-600" />
+                Locate Nurseries
+              </a>
+            </div>
           </div>
         </div>
       )}
-    </nav>
+    </>
   );
 }

@@ -1,0 +1,12 @@
+<h1 className="text-5xl md:text-6xl lg:text-8xl font-bold text-white tracking-tight leading-[1.1] mb-8 drop-shadow-2xl">
+            Spinyard <br />
+            <span
+              className="bg-gradient-to-b from-[#07a91f] to-[#0a5b19] bg-clip-text text-transparent"
+              style={{
+                filter:
+                  "drop-shadow(1px 0 0 white) drop-shadow(-1px 0 0 white) drop-shadow(0 1px 0 white) drop-shadow(0 -1px 0 white)",
+              }}
+            >
+              Seedlings
+            </span>
+          </h1>

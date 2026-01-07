@@ -19,6 +19,11 @@ import slide6 from "../assets/slide-6.jpg";
 import slide7 from "../assets/slide-7.jpg";
 import slide8 from "../assets/slide-8.jpg";
 
+// Category Images
+import tomatoseedlings from "../assets/tomato-seedlings.jpg";
+import cabbageseedlings from "../assets/cabbage-seedlings.jpg";
+import pepperseedlings from "../assets/pepper-seedlings.jpg";
+
 export default function Home() {
   // 2. SETUP SLIDER
   const sliderImages = [
@@ -31,6 +36,7 @@ export default function Home() {
     slide7,
     slide8,
   ];
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -44,40 +50,48 @@ export default function Home() {
     <div className="flex flex-col gap-16 md:gap-24">
       {/* 1. HERO SECTION */}
       <section className="relative rounded-2xl overflow-hidden bg-ash-grey-900 shadow-xl mx-auto w-full group h-[600px] md:h-[700px]">
-        {/* BACKGROUND: SPLIT SLIDER */}
+        {/* BACKGROUND: SMOOTH CROSS-FADE SPLIT SLIDER */}
         <div className="absolute inset-0 z-0 flex flex-col md:flex-row">
-          {/* First Image Pane */}
+          {/* PANE 1 */}
           <div className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden border-b md:border-b-0 md:border-r border-white/10">
-            <img
-              key={currentIndex}
-              src={sliderImages[currentIndex]}
-              alt="Showcase Primary"
-              className="w-full h-full object-cover animate-in fade-in duration-1000"
-            />
+            {sliderImages.map((img, index) => (
+              <img
+                key={`left-${index}`}
+                src={img}
+                alt="Showcase Primary"
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+                  index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+                }`}
+              />
+            ))}
           </div>
 
-          {/* Second Image Pane */}
+          {/* PANE 2 */}
           <div className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden">
-            <img
-              key={(currentIndex + 1) % sliderImages.length}
-              src={sliderImages[(currentIndex + 1) % sliderImages.length]}
-              alt="Showcase Secondary"
-              className="w-full h-full object-cover animate-in fade-in duration-1000"
-            />
+            {sliderImages.map((img, index) => {
+              const isRightActive =
+                index === (currentIndex + 1) % sliderImages.length;
+              return (
+                <img
+                  key={`right-${index}`}
+                  src={img}
+                  alt="Showcase Secondary"
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+                    isRightActive ? "opacity-100 z-10" : "opacity-0 z-0"
+                  }`}
+                />
+              );
+            })}
           </div>
 
           {/* OVERLAY */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/60 to-transparent md:bg-gradient-to-r md:from-black/95 md:via-black/60 md:to-transparent" />
+          <div className="absolute inset-0 z-20 bg-gradient-to-b from-black/90 via-black/60 to-transparent md:bg-gradient-to-r md:from-black/95 md:via-black/60 md:to-transparent" />
         </div>
 
         {/* CONTENT */}
-        <div className="relative z-10 px-6 h-full flex flex-col justify-center md:px-12 max-w-4xl">
+        <div className="relative z-30 px-6 h-full flex flex-col justify-center md:px-12 max-w-4xl">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] mb-6 drop-shadow-lg">
             Spinyard <br />
-            {/* HARD WHITE OUTLINE TECHNIQUE:
-               We stack 4 drop-shadows with 0 blur (1.5px offset in all directions).
-               This creates a solid border around the transparent gradient text.
-            */}
             <span
               className="bg-gradient-to-b from-[#07a91f] to-[#0a5b19] bg-clip-text text-transparent"
               style={{
@@ -102,7 +116,6 @@ export default function Home() {
               View Services
             </Link>
 
-            {/* White/Cream Gradient Button */}
             <Link
               to="/products"
               className="inline-flex justify-center items-center px-8 py-4 bg-gradient-to-b from-white to-soft-linen-100 text-ash-grey-900 border border-soft-linen-200 text-base font-bold uppercase tracking-wider rounded-lg hover:from-white hover:to-white hover:scale-105 transition-all shadow-lg"
@@ -115,39 +128,43 @@ export default function Home() {
       </section>
 
       {/* 2. TRUST SIGNALS */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-        {[
-          {
-            icon: ShieldCheck,
-            title: "Disease-Free Certified",
-            desc: "Grown in sterile media to ensure your crop starts clean and stays healthy.",
-          },
-          {
-            icon: Sun,
-            title: "Properly Hardened",
-            desc: "Acclimatized to full sun before sale to reduce transplant shock in your field.",
-          },
-          {
-            icon: Sprout,
-            title: "High-Yield Varieties",
-            desc: "We stock premium hybrids like Star 9037 and Trinity known for local performance.",
-          },
-        ].map((feature, idx) => (
-          <div
-            key={idx}
-            className="bg-white p-8 rounded-xl border border-ash-grey-200 shadow-sm hover:shadow-md transition-shadow duration-300"
-          >
-            <div className="h-14 w-14 bg-soft-linen-100 rounded-lg flex items-center justify-center mb-5 text-olive-leaf-700">
-              <feature.icon strokeWidth={1.5} size={32} />
+      {/* BACKGROUND WRAPPER: Light Black to Dark Green Gradient */}
+      <section className="rounded-2xl p-8 md:p-12 bg-gradient-to-b from-ash-grey-900 to-[#051808] shadow-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          {[
+            {
+              icon: ShieldCheck,
+              title: "Disease-Free Certified",
+              desc: "Grown in sterile media to ensure your crop starts clean and stays healthy.",
+            },
+            {
+              icon: Sun,
+              title: "Properly Hardened",
+              desc: "Acclimatized to full sun before sale to reduce transplant shock in your field.",
+            },
+            {
+              icon: Sprout,
+              title: "High-Yield Varieties",
+              desc: "We stock premium hybrids like Star 9037 and Trinity known for local performance.",
+            },
+          ].map((feature, idx) => (
+            <div
+              key={idx}
+              // CARDS: White background to pop against the dark section
+              className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-white/5"
+            >
+              <div className="h-14 w-14 bg-soft-linen-100 rounded-lg flex items-center justify-center mb-5 text-olive-leaf-700 border border-soft-linen-200">
+                <feature.icon strokeWidth={1.5} size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-ash-grey-900 mb-3">
+                {feature.title}
+              </h3>
+              <p className="text-ash-grey-600 leading-relaxed text-sm">
+                {feature.desc}
+              </p>
             </div>
-            <h3 className="text-xl font-bold text-ash-grey-900 mb-3">
-              {feature.title}
-            </h3>
-            <p className="text-ash-grey-600 leading-relaxed text-sm">
-              {feature.desc}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
       </section>
 
       {/* 3. QUICK CATEGORY PREVIEW */}
@@ -173,19 +190,19 @@ export default function Home() {
           {[
             {
               name: "Tomatoes",
-              img: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&q=80&w=800",
+              img: tomatoseedlings,
             },
             {
               name: "Leafy Veg",
-              img: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=800",
+              img: slide2,
             },
             {
               name: "Cabbages",
-              img: "https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?auto=format&fit=crop&q=80&w=800",
+              img: cabbageseedlings,
             },
             {
               name: "Peppers",
-              img: "https://images.unsplash.com/photo-1563565375-f3fdf5d6c4d8?auto=format&fit=crop&q=80&w=800",
+              img: pepperseedlings,
             },
           ].map((cat, idx) => (
             <Link

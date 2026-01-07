@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Phone, MapPin } from "lucide-react"; // Removed ShoppingBag import
+import { Phone, MapPin } from "lucide-react";
 import logo from "../assets/header-logo.png";
 
 export default function Navbar() {
@@ -89,10 +89,13 @@ export default function Navbar() {
                 <span>Order Now</span>
               </a>
 
-              {/* MOBILE: "CATALOG" LINK (Text Only - No Icon) */}
+              {/* MOBILE: "CATALOG" LINK 
+                  - Reverted to rounded-md shape.
+                  - Changed color to solid gradient background with white text.
+              */}
               <Link
                 to="/products"
-                className="md:hidden flex items-center text-xs font-black uppercase tracking-widest text-olive-leaf-600 bg-olive-leaf-50 px-3 py-2 rounded-md border border-olive-leaf-100"
+                className="md:hidden flex items-center justify-center px-3 py-2 bg-gradient-to-b from-[#07a91f] to-[#0a5b19] text-white text-xs font-black uppercase tracking-widest rounded-md shadow-sm active:scale-95 transition-transform"
               >
                 Catalog
               </Link>

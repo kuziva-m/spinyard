@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
-import Catalog from "./pages/Catalog"; // <--- IMPORT THE REAL FILE HERE
+import Catalog from "./pages/Catalog";
+import Product from "./pages/Product";
+import Admin from "./pages/Admin";
 
 // Temporary placeholders for pages we haven't built yet
 const Services = () => (
@@ -28,6 +30,8 @@ function App() {
           <Route path="/products" element={<Catalog />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/product/:id" element={<Product />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </MainLayout>
     </Router>

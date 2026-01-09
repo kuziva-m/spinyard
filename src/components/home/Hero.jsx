@@ -35,11 +35,14 @@ export default function Hero() {
 
   return (
     // FULL WIDTH BREAKOUT CONTAINER
-    <section className="relative w-screen -ml-[50vw] left-[50%] h-[85vh] min-h-[600px] overflow-hidden bg-ash-grey-900">
+    // Updated HEIGHTS:
+    // Mobile: h-[50vh] min-h-[400px] (Reduced height to remove bottom space)
+    // Desktop: md:h-[85vh] md:min-h-[600px] (Keeps the original tall layout)
+    <section className="relative w-screen -ml-[50vw] left-[50%] h-[50vh] min-h-[400px] md:h-[85vh] md:min-h-[600px] overflow-hidden bg-ash-grey-900">
       {/* BACKGROUND: SLIDER */}
-      <div className="absolute inset-0 z-0 flex flex-col md:flex-row">
-        {/* PANE 1 (Left/Top) */}
-        <div className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden border-b md:border-b-0 md:border-r border-white/10">
+      <div className="absolute inset-0 z-0 flex">
+        {/* PANE 1: LEFT (Desktop) / FULL (Mobile) */}
+        <div className="relative w-full h-full md:w-1/2 overflow-hidden border-r border-white/10">
           {sliderImages.map((img, index) => (
             <img
               key={`left-${index}`}
@@ -52,8 +55,8 @@ export default function Hero() {
           ))}
         </div>
 
-        {/* PANE 2 (Right/Bottom) */}
-        <div className="relative w-full h-1/2 md:w-1/2 md:h-full overflow-hidden">
+        {/* PANE 2: RIGHT (Desktop Only) */}
+        <div className="hidden md:block relative w-1/2 h-full overflow-hidden">
           {sliderImages.map((img, index) => {
             const isRightActive =
               index === (currentIndex + 1) % sliderImages.length;
@@ -70,25 +73,21 @@ export default function Hero() {
           })}
         </div>
 
-        {/* OVERLAY LOGIC:
-            - Mobile: Gradient covering everything (Top to Bottom)
-            - Desktop: Dark Black Gradient ONLY on the Left Half (w-1/2)
-        */}
+        {/* OVERLAY LOGIC */}
         <div className="absolute inset-0 z-20 pointer-events-none">
-          {/* Mobile Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/60 to-transparent md:hidden" />
+          {/* Mobile Overlay: Darkens the single tile for text readability */}
+          <div className="absolute inset-0 bg-black/50 md:hidden" />
 
-          {/* Desktop Overlay (Left Side Only) */}
+          {/* Desktop Overlay: Left side gradient only */}
           <div className="hidden md:block absolute left-0 top-0 bottom-0 w-1/2 bg-gradient-to-r from-black/95 via-black/80 to-black/40" />
         </div>
       </div>
 
       {/* CONTENT CONTAINER */}
+      {/* UPDATED: Removed 'justify-start pt-28' and used 'justify-center' to vertically align text */}
       <div className="relative z-30 max-w-7xl mx-auto h-full flex flex-col justify-center px-4 sm:px-6 lg:px-8">
-        {/* Added 'text-center md:text-left' and 'items-center md:items-start' for Mobile Center Align */}
         <div className="max-w-4xl flex flex-col items-center md:items-start text-center md:text-left">
-          {/* UPDATED PARAGRAPH: Bolder, Bigger, Specific Line Breaks */}
-          <p className="text-2xl md:text-4xl font-bold text-ash-grey-100 mb-10 leading-tight max-w-3xl drop-shadow-xl">
+          <p className="text-3xl md:text-4xl font-bold text-ash-grey-100 mb-8 leading-tight max-w-3xl drop-shadow-2xl">
             The leading horticultural <br />
             seed and seedlings <br />
             provider in Zimbabwe <br />
@@ -96,7 +95,8 @@ export default function Hero() {
             the best quality seedlings.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-5">
+          {/* BUTTONS: Hidden on Mobile, Visible on Desktop */}
+          <div className="hidden md:flex flex-col sm:flex-row gap-5">
             <Link
               to="/services"
               className="inline-flex justify-center items-center px-10 py-5 border border-white/30 backdrop-blur-sm text-lg font-bold uppercase tracking-wider rounded-lg text-white hover:bg-white hover:text-ash-grey-900 transition-all shadow-xl"

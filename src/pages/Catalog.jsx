@@ -53,7 +53,6 @@ export default function Catalog() {
       return false;
 
     // 2. Filter by Category
-    // Note: We use flexible matching (includes) to handle slight naming variations
     if (categoryFilter !== "All" && !product.category?.includes(categoryFilter))
       return false;
 
@@ -72,7 +71,7 @@ export default function Catalog() {
   return (
     <div className="min-h-screen pb-20">
       {/* HEADER & CONTROLS */}
-      <div className="bg-ash-grey-900 pt-8 pb-12 px-4 sm:px-6 lg:px-8 shadow-lg">
+      <div className="bg-ash-grey-900 pt-32 pb-12 px-4 sm:px-6 lg:px-8 shadow-lg">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Seedling <span className="text-olive-leaf-400">Catalog</span>
@@ -92,7 +91,7 @@ export default function Catalog() {
               <Search className="absolute left-3 top-3.5 h-5 w-5 text-ash-grey-400" />
             </div>
 
-            {/* LOCATION TOGGLE (The "Killer Feature") */}
+            {/* LOCATION TOGGLE */}
             <div className="flex p-1 bg-ash-grey-800 rounded-lg self-start w-full md:w-auto">
               {["all", "meyrick", "umwinsdale"].map((loc) => (
                 <button
@@ -117,7 +116,11 @@ export default function Catalog() {
       </div>
 
       {/* CATEGORY PILLS (Sticky) */}
-      <div className="sticky top-[64px] z-30 bg-soft-linen-50/95 backdrop-blur-sm border-b border-ash-grey-200 py-3 px-4 overflow-x-auto">
+      {/* FIX APPLIED HERE: 
+          Changed top-[64px] to top-[57px] (Mobile) and md:top-[81px] (Desktop) 
+          to match the exact height of the scrolled navbar. 
+      */}
+      <div className="sticky top-[57px] md:top-[81px] z-30 bg-soft-linen-50/95 backdrop-blur-sm border-b border-ash-grey-200 py-3 px-4 overflow-x-auto transition-all duration-300">
         <div className="max-w-7xl mx-auto flex gap-2 min-w-max">
           {categories.map((cat) => (
             <button
@@ -213,14 +216,12 @@ export default function Catalog() {
 
                   {/* Actions */}
                   <div className="mt-auto pt-4 border-t border-ash-grey-100">
-                    <a
-                      href={`https://wa.me/263772209434?text=Hi, is ${product.name} currently available?`}
-                      target="_blank"
-                      rel="noreferrer"
+                    <Link
+                      to={`/product/${product.id}`}
                       className="block w-full text-center py-2 px-4 rounded-lg bg-ash-grey-900 text-white text-sm font-bold hover:bg-olive-leaf-600 transition-colors"
                     >
-                      Check Availability
-                    </a>
+                      View Details
+                    </Link>
                   </div>
                 </div>
               </div>

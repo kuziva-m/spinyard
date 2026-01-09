@@ -90,12 +90,12 @@ export default function Navbar() {
               </a>
 
               {/* MOBILE: "CATALOG" LINK 
-                  - Reverted to rounded-md shape.
-                  - Changed color to solid gradient background with white text.
+                  - Updated to solid color #08821c (midpoint green)
+                  - Removed gradient classes
               */}
               <Link
                 to="/products"
-                className="md:hidden flex items-center justify-center px-3 py-2 bg-gradient-to-b from-[#07a91f] to-[#0a5b19] text-white text-xs font-black uppercase tracking-widest rounded-md shadow-sm active:scale-95 transition-transform"
+                className="md:hidden flex items-center justify-center px-3 py-2 bg-[#08821c] text-white text-xs font-black uppercase tracking-widest rounded-md shadow-sm active:scale-95 transition-transform"
               >
                 Catalog
               </Link>

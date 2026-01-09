@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Facebook, MapPin, Mail, Sprout } from "lucide-react";
+import { Facebook, MapPin, Mail } from "lucide-react";
+import logo from "../assets/header-logo.png";
 
 export default function Footer() {
   return (
@@ -8,17 +9,22 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Column */}
           <div className="col-span-1 md:col-span-1">
-            <div className="flex items-center gap-2 mb-4 text-white">
-              <Sprout className="h-6 w-6 text-olive-leaf-500" />
-              <span className="font-bold text-xl tracking-tight">Spinyard</span>
+            {/* REPLACED: Text/Icon with Logo */}
+            <div className="mb-6">
+              <img
+                src={logo}
+                alt="Spinyard Seedlings"
+                className="h-14 w-auto object-contain bg-white/5 p-2 rounded-lg" // Added subtle bg to ensure visibility on dark footer
+              />
             </div>
+
             <p className="text-sm text-ash-grey-400 mb-6 leading-relaxed">
               Premium, disease-free seedlings for the Zimbabwean farmer. Grown
               with expertise, hardened for resilience.
             </p>
             <div className="flex space-x-4">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/Spinyardseedlings/"
                 target="_blank"
                 rel="noreferrer"
                 className="text-ash-grey-400 hover:text-olive-leaf-400 transition-colors"

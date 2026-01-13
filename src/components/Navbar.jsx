@@ -20,7 +20,7 @@ export default function Navbar() {
     { name: "Home", href: "/" },
     { name: "Catalog", href: "/products" },
     { name: "Services", href: "/services" },
-    { name: "Visit Us", href: "/contact" },
+    { name: "Visit Us", href: "/visit-us" }, // <--- UPDATED LINK
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -157,13 +157,16 @@ export default function Navbar() {
                 <Phone size={20} className="text-olive-leaf-600" />
                 0772 209 434
               </a>
-              <a
-                href="/contact"
+
+              {/* UPDATED: Changed to Link component and points to /visit-us */}
+              <Link
+                to="/visit-us"
+                onClick={() => setIsOpen(false)}
                 className="flex items-center gap-3 text-lg font-medium text-ash-grey-600"
               >
                 <MapPin size={20} className="text-olive-leaf-600" />
                 Locate Nurseries
-              </a>
+              </Link>
             </div>
           </div>
         </div>

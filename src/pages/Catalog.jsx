@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { Search, Filter, MapPin, Loader2, AlertCircle } from "lucide-react";
 
@@ -8,23 +9,38 @@ export default function Catalog() {
   const [error, setError] = useState(null);
 
   // FILTERS
-  const [locationFilter, setLocationFilter] = useState("all"); // 'all', 'meyrick', 'umwinsdale'
+  const [locationFilter, setLocationFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Categories derived from data + static fallback
+  const location = useLocation();
+
   const categories = [
     "All",
     "Tomatoes",
+    "Cabbages",
+    "Peppers",
     "Leafy Vegetables",
-    "Brassicas",
+    "Lettuce",
+    "Beetroot",
     "Herbs",
     "Fruit Trees",
+    "Other",
   ];
 
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const categoryFromUrl = params.get("category");
+    if (categoryFromUrl && categories.includes(categoryFromUrl)) {
+      setCategoryFilter(categoryFromUrl);
+    } else {
+      setCategoryFilter("All");
+    }
+  }, [location.search]);
 
   async function fetchProducts() {
     try {
@@ -44,19 +60,15 @@ export default function Catalog() {
     }
   }
 
-  // --- FILTERING LOGIC ---
   const filteredProducts = products.filter((product) => {
-    // 1. Filter by Location
     if (locationFilter === "meyrick" && !product.available_meyrick)
       return false;
     if (locationFilter === "umwinsdale" && !product.available_umwinsdale)
       return false;
 
-    // 2. Filter by Category
     if (categoryFilter !== "All" && !product.category?.includes(categoryFilter))
       return false;
 
-    // 3. Filter by Search
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       return (
@@ -64,35 +76,33 @@ export default function Catalog() {
         product.category.toLowerCase().includes(q)
       );
     }
-
     return true;
   });
 
   return (
     <div className="min-h-screen pb-20">
       {/* HEADER & CONTROLS */}
-      <div className="bg-ash-grey-900 pt-32 pb-12 px-4 sm:px-6 lg:px-8 shadow-lg">
-        <div className="max-w-7xl mx-auto">
+      <div className="relative overflow-hidden bg-gradient-to-b from-ash-grey-900 to-[#051808] pt-32 pb-12 px-4 sm:px-6 lg:px-8 shadow-lg">
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-olive-leaf-600 rounded-full opacity-20 blur-3xl pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Seedling <span className="text-olive-leaf-400">Catalog</span>
+            Seedlings <span className="text-olive-leaf-600">Catalog</span>
           </h1>
 
-          {/* Controls Container */}
           <div className="flex flex-col gap-4">
-            {/* SEARCH BAR */}
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search for 'Star 9037' or 'Cabbage'..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-ash-grey-800 border border-ash-grey-600 text-white placeholder-ash-grey-400 focus:outline-none focus:ring-2 focus:ring-olive-leaf-500"
+                className="w-full pl-10 pr-4 py-3 rounded-lg bg-ash-grey-800/50 border border-ash-grey-600 text-white placeholder-ash-grey-400 focus:outline-none focus:ring-2 focus:ring-olive-leaf-500 backdrop-blur-sm"
               />
               <Search className="absolute left-3 top-3.5 h-5 w-5 text-ash-grey-400" />
             </div>
 
-            {/* LOCATION TOGGLE */}
-            <div className="flex p-1 bg-ash-grey-800 rounded-lg self-start w-full md:w-auto">
+            <div className="flex p-1 bg-ash-grey-800/50 backdrop-blur-sm rounded-lg self-start w-full md:w-auto border border-ash-grey-700">
               {["all", "meyrick", "umwinsdale"].map((loc) => (
                 <button
                   key={loc}
@@ -115,11 +125,7 @@ export default function Catalog() {
         </div>
       </div>
 
-      {/* CATEGORY PILLS (Sticky) */}
-      {/* FIX APPLIED HERE: 
-          Changed top-[64px] to top-[57px] (Mobile) and md:top-[81px] (Desktop) 
-          to match the exact height of the scrolled navbar. 
-      */}
+      {/* CATEGORY PILLS */}
       <div className="sticky top-[57px] md:top-[81px] z-30 bg-soft-linen-50/95 backdrop-blur-sm border-b border-ash-grey-200 py-3 px-4 overflow-x-auto transition-all duration-300">
         <div className="max-w-7xl mx-auto flex gap-2 min-w-max">
           {categories.map((cat) => (
@@ -163,14 +169,19 @@ export default function Catalog() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6">
             {filteredProducts.map((product) => (
               <div
                 key={product.id}
                 className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-ash-grey-100 overflow-hidden flex flex-col"
               >
-                {/* Image Area */}
-                <div className="relative aspect-[4/3] bg-ash-grey-100">
+                {/* UPDATED IMAGE CONTAINER:
+                   - Replaced 'aspect-[4/3]' with fixed heights
+                   - Mobile: h-40 (160px)
+                   - Desktop: md:h-48 (192px)
+                   - w-full ensures it fills the width
+                */}
+                <div className="relative h-40 md:h-48 w-full bg-ash-grey-100">
                   <img
                     src={product.image_url || "/placeholder.jpg"}
                     alt={product.name}
@@ -182,43 +193,43 @@ export default function Catalog() {
                     }}
                   />
                   <div className="absolute top-2 right-2">
-                    <span className="px-2 py-1 bg-white/90 backdrop-blur text-[10px] font-bold uppercase tracking-wider text-ash-grey-900 rounded-md shadow-sm">
+                    <span className="px-1.5 py-0.5 md:px-2 md:py-1 bg-white/90 backdrop-blur text-[8px] md:text-[10px] font-bold uppercase tracking-wider text-ash-grey-900 rounded-md shadow-sm">
                       {product.category}
                     </span>
                   </div>
                 </div>
 
                 {/* Content Area */}
-                <div className="p-4 flex flex-col flex-grow">
-                  <h3 className="text-lg font-bold text-ash-grey-900 mb-1 leading-tight">
+                <div className="p-3 md:p-4 flex flex-col flex-grow">
+                  <h3 className="text-sm md:text-lg font-bold text-ash-grey-900 mb-1 leading-tight line-clamp-2">
                     {product.name}
                   </h3>
 
-                  {/* Availability Badges */}
-                  <div className="flex flex-wrap gap-2 mt-3 mb-4">
+                  <div className="flex flex-wrap gap-1.5 md:gap-2 mt-2 md:mt-3 mb-3 md:mb-4">
                     {product.available_meyrick && (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-olive-leaf-50 text-olive-leaf-700 border border-olive-leaf-100">
-                        <MapPin className="w-3 h-3 mr-1" /> Meyrick
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] md:text-xs font-medium bg-olive-leaf-50 text-olive-leaf-700 border border-olive-leaf-100">
+                        <MapPin className="w-2.5 h-2.5 md:w-3 md:h-3 mr-1" />{" "}
+                        Meyrick
                       </span>
                     )}
                     {product.available_umwinsdale && (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-terracotta-50 text-terracotta-700 border border-terracotta-100">
-                        <MapPin className="w-3 h-3 mr-1" /> Umwinsdale
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] md:text-xs font-medium bg-terracotta-50 text-terracotta-700 border border-terracotta-100">
+                        <MapPin className="w-2.5 h-2.5 md:w-3 md:h-3 mr-1" />{" "}
+                        Umwinsdale
                       </span>
                     )}
                     {!product.available_meyrick &&
                       !product.available_umwinsdale && (
-                        <span className="text-xs text-ash-grey-400 italic">
+                        <span className="text-[10px] md:text-xs text-ash-grey-400 italic">
                           Out of stock
                         </span>
                       )}
                   </div>
 
-                  {/* Actions */}
-                  <div className="mt-auto pt-4 border-t border-ash-grey-100">
+                  <div className="mt-auto pt-3 border-t border-ash-grey-100">
                     <Link
                       to={`/product/${product.id}`}
-                      className="block w-full text-center py-2 px-4 rounded-lg bg-ash-grey-900 text-white text-sm font-bold hover:bg-olive-leaf-600 transition-colors"
+                      className="block w-full text-center py-1.5 md:py-2 px-2 md:px-4 rounded-lg bg-ash-grey-900 text-white text-xs md:text-sm font-bold hover:bg-olive-leaf-600 transition-colors"
                     >
                       View Details
                     </Link>

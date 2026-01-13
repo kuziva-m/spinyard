@@ -11,6 +11,24 @@ import slide5 from "../../assets/slide-5.jpg";
 import slide6 from "../../assets/slide-6.jpg";
 import slide7 from "../../assets/slide-7.jpg";
 import slide8 from "../../assets/slide-8.jpg";
+import slide9 from "../../assets/slide-9.jpeg";
+import slide10 from "../../assets/slide-10.jpeg";
+import slide11 from "../../assets/slide-11.jpeg";
+import slide12 from "../../assets/slide-12.jpeg";
+import slide13 from "../../assets/slide-13.jpeg";
+import slide14 from "../../assets/slide-14.jpeg";
+import slide15 from "../../assets/slide-15.jpeg";
+import slide16 from "../../assets/slide-16.jpeg";
+import slide17 from "../../assets/slide-17.jpeg";
+import slide18 from "../../assets/slide-18.jpeg";
+import slide19 from "../../assets/slide-19.jpeg";
+import slide20 from "../../assets/slide-20.jpeg";
+import slide21 from "../../assets/slide-21.jpeg";
+import slide22 from "../../assets/slide-22.jpeg";
+import slide23 from "../../assets/slide-23.jpeg";
+import slide24 from "../../assets/slide-24.jpeg";
+import slide25 from "../../assets/slide-25.jpeg";
+import slide26 from "../../assets/slide-26.jpeg";
 
 export default function Hero() {
   const sliderImages = [
@@ -22,6 +40,24 @@ export default function Hero() {
     slide6,
     slide7,
     slide8,
+    slide9,
+    slide10,
+    slide11,
+    slide12,
+    slide13,
+    slide14,
+    slide15,
+    slide16,
+    slide17,
+    slide18,
+    slide19,
+    slide20,
+    slide21,
+    slide22,
+    slide23,
+    slide24,
+    slide25,
+    slide26,
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);

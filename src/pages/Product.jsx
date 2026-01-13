@@ -33,7 +33,6 @@ export default function Product() {
   }, [id]);
 
   // AUTO FLIP ANIMATION
-  // Flips to the plant image for 3 seconds, then back, every 6 seconds
   useEffect(() => {
     if (!product?.plant_image_url) return;
 
@@ -66,20 +65,28 @@ export default function Product() {
     );
 
   return (
-    <div className="min-h-screen bg-soft-linen-50 pt-28 pb-20 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-6xl mx-auto">
+    // UPDATED: Reduced py (padding-y) to fit content better in one view
+    <div className="min-h-screen bg-soft-linen-50 pt-24 pb-10 px-4 sm:px-6 lg:px-8 font-sans flex flex-col justify-center">
+      <div className="max-w-6xl mx-auto w-full">
         {/* BREADCRUMB */}
+        {/* UPDATED: Reduced bottom margin */}
         <Link
           to="/products"
-          className="inline-flex items-center gap-2 text-ash-grey-500 hover:text-olive-leaf-600 font-medium mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-ash-grey-500 hover:text-olive-leaf-600 font-medium mb-4 transition-colors text-sm"
         >
-          <ChevronLeft size={20} />
+          <ChevronLeft size={18} />
           Back to Catalog
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        {/* UPDATED: Reduced gap and added items-center for vertical alignment */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* LEFT: IMAGE FLIPPER */}
-          <div className="relative aspect-square w-full max-w-lg mx-auto lg:max-w-none group [perspective:1000px]">
+          {/* UPDATED: 
+              - Mobile: Fixed height h-64 (Banner style) to save vertical space.
+              - Desktop: Max height 50vh (Half screen height) and aspect-square.
+              - Added max-w-md to stop it from getting too wide.
+          */}
+          <div className="relative w-full max-w-md mx-auto lg:max-w-none h-64 sm:h-80 lg:h-[50vh] lg:aspect-square group [perspective:1000px]">
             <div
               className={`relative w-full h-full transition-all duration-700 [transform-style:preserve-3d] ${
                 isFlipped ? "[transform:rotateY(180deg)]" : ""
@@ -92,12 +99,12 @@ export default function Product() {
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2">
-                  <Sprout size={14} /> Seedling Stage
+                <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-white text-[10px] font-bold uppercase tracking-wider flex items-center gap-2">
+                  <Sprout size={12} /> Seedling
                 </div>
               </div>
 
-              {/* BACK: MATURE PLANT (Only if available) */}
+              {/* BACK: MATURE PLANT */}
               {product.plant_image_url && (
                 <div className="absolute inset-0 w-full h-full bg-white rounded-2xl shadow-xl border border-olive-leaf-200 overflow-hidden [backface-visibility:hidden] [transform:rotateY(180deg)]">
                   <img
@@ -105,8 +112,8 @@ export default function Product() {
                     alt={`${product.name} Mature`}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute bottom-4 left-4 bg-olive-leaf-900/80 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2">
-                    <Sun size={14} /> Mature Plant
+                  <div className="absolute bottom-3 left-3 bg-olive-leaf-900/80 backdrop-blur-md px-3 py-1 rounded-full text-white text-[10px] font-bold uppercase tracking-wider flex items-center gap-2">
+                    <Sun size={12} /> Mature
                   </div>
                 </div>
               )}
@@ -114,7 +121,7 @@ export default function Product() {
 
             {/* HINT TEXT */}
             {product.plant_image_url && (
-              <p className="text-center text-xs text-ash-grey-400 mt-4 animate-pulse">
+              <p className="text-center text-[10px] text-ash-grey-400 mt-2 animate-pulse">
                 Showing potential growth...
               </p>
             )}
@@ -122,53 +129,55 @@ export default function Product() {
 
           {/* RIGHT: PRODUCT INFO */}
           <div className="flex flex-col justify-center">
-            <span className="text-olive-leaf-600 font-bold uppercase tracking-wider text-sm mb-2">
+            <span className="text-olive-leaf-600 font-bold uppercase tracking-wider text-xs mb-1">
               {product.category}
             </span>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-ash-grey-900 mb-6">
+            {/* UPDATED: Slightly smaller text to prevent wrapping issues */}
+            <h1 className="text-3xl md:text-5xl font-extrabold text-ash-grey-900 mb-4">
               {product.name}
             </h1>
 
             {/* TRUST BADGES */}
-            <div className="flex flex-wrap gap-3 mb-8">
-              <div className="flex items-center gap-2 px-3 py-2 bg-olive-leaf-50 text-olive-leaf-800 rounded-lg text-sm font-medium border border-olive-leaf-100">
-                <ShieldCheck size={18} /> Disease-Free
+            <div className="flex flex-wrap gap-2 mb-6">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-olive-leaf-50 text-olive-leaf-800 rounded-lg text-xs font-medium border border-olive-leaf-100">
+                <ShieldCheck size={16} /> Disease-Free
               </div>
-              <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 text-amber-800 rounded-lg text-sm font-medium border border-amber-100">
-                <Sun size={18} /> Hardened
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-800 rounded-lg text-xs font-medium border border-amber-100">
+                <Sun size={16} /> Hardened
               </div>
             </div>
 
             {/* AVAILABILITY BOX */}
-            <div className="bg-white p-6 rounded-xl border border-ash-grey-200 shadow-sm mb-8">
-              <h3 className="text-sm font-bold text-ash-grey-900 uppercase tracking-wide mb-4 border-b border-ash-grey-100 pb-2">
-                Current Availability
+            {/* UPDATED: Reduced padding (p-4) to make it more compact */}
+            <div className="bg-white p-5 rounded-xl border border-ash-grey-200 shadow-sm mb-6">
+              <h3 className="text-xs font-bold text-ash-grey-900 uppercase tracking-wide mb-3 border-b border-ash-grey-100 pb-2">
+                Availability
               </h3>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
                   <span className="flex items-center gap-2 text-ash-grey-600">
-                    <MapPin size={18} /> Meyrick Park
+                    <MapPin size={16} /> Meyrick Park
                   </span>
                   {product.available_meyrick ? (
-                    <span className="text-olive-leaf-600 font-bold text-sm bg-olive-leaf-50 px-2 py-1 rounded">
+                    <span className="text-olive-leaf-600 font-bold text-xs bg-olive-leaf-50 px-2 py-1 rounded">
                       In Stock
                     </span>
                   ) : (
-                    <span className="text-red-500 font-bold text-sm bg-red-50 px-2 py-1 rounded">
+                    <span className="text-red-500 font-bold text-xs bg-red-50 px-2 py-1 rounded">
                       Sold Out
                     </span>
                   )}
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between text-sm">
                   <span className="flex items-center gap-2 text-ash-grey-600">
-                    <MapPin size={18} /> Umwinsdale
+                    <MapPin size={16} /> Umwinsdale
                   </span>
                   {product.available_umwinsdale ? (
-                    <span className="text-olive-leaf-600 font-bold text-sm bg-olive-leaf-50 px-2 py-1 rounded">
+                    <span className="text-olive-leaf-600 font-bold text-xs bg-olive-leaf-50 px-2 py-1 rounded">
                       In Stock
                     </span>
                   ) : (
-                    <span className="text-red-500 font-bold text-sm bg-red-50 px-2 py-1 rounded">
+                    <span className="text-red-500 font-bold text-xs bg-red-50 px-2 py-1 rounded">
                       Sold Out
                     </span>
                   )}
@@ -181,11 +190,11 @@ export default function Product() {
               href={`https://wa.me/263772209434?text=Hi, I'm interested in ordering ${product.name}. Is it available?`}
               target="_blank"
               rel="noreferrer"
-              className="w-full bg-ash-grey-900 text-white text-center py-4 rounded-xl font-bold text-lg uppercase tracking-wider hover:bg-olive-leaf-600 hover:scale-[1.02] transition-all shadow-lg flex items-center justify-center gap-3"
+              className="w-full bg-ash-grey-900 text-white text-center py-3.5 rounded-xl font-bold text-lg uppercase tracking-wider hover:bg-olive-leaf-600 hover:scale-[1.02] transition-all shadow-lg flex items-center justify-center gap-2"
             >
               Order via WhatsApp
             </a>
-            <p className="text-xs text-ash-grey-400 text-center mt-3">
+            <p className="text-[10px] text-ash-grey-400 text-center mt-2">
               Direct line to our sales team
             </p>
           </div>

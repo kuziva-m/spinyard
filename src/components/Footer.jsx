@@ -9,12 +9,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Column */}
           <div className="col-span-1 md:col-span-1">
-            {/* REPLACED: Text/Icon with Logo */}
             <div className="mb-6">
               <img
                 src={logo}
                 alt="Spinyard Seedlings"
-                className="h-14 w-auto object-contain bg-white/5 p-2 rounded-lg" // Added subtle bg to ensure visibility on dark footer
+                className="h-14 w-auto object-contain bg-white/5 p-2 rounded-lg"
               />
             </div>
 
@@ -35,7 +34,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links - UPDATED CATEGORIES */}
           <div>
             <h3 className="text-sm font-semibold text-white tracking-wider uppercase mb-4">
               Shop
@@ -51,6 +50,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  to="/products?category=Cabbages"
+                  className="text-sm hover:text-white transition-colors"
+                >
+                  Cabbages
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/products?category=Leafy%20Vegetables"
                   className="text-sm hover:text-white transition-colors"
                 >
@@ -59,15 +66,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/products?category=Herbs"
-                  className="text-sm hover:text-white transition-colors"
-                >
-                  Herbs & Spices
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/products?category=Fruit"
+                  to="/products?category=Fruit%20Trees"
                   className="text-sm hover:text-white transition-colors"
                 >
                   Fruit Trees

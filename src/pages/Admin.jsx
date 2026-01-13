@@ -16,8 +16,11 @@ import {
 
 const CATEGORIES = [
   "Tomatoes",
+  "Cabbages",
+  "Peppers",
   "Leafy Vegetables",
-  "Brassicas",
+  "Lettuce",
+  "Beetroot",
   "Herbs",
   "Fruit Trees",
   "Other",

@@ -3,6 +3,7 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import Catalog from "./pages/Catalog";
 import Product from "./pages/Product";
+import VisitUs from "./pages/VisitUs";
 import Admin from "./pages/Admin";
 
 // Temporary placeholders for pages we haven't built yet
@@ -31,6 +32,7 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/product/:id" element={<Product />} />
+          <Route path="/visit-us" element={<VisitUs />} />
           <Route path="/admin" element={<Admin />} />
         </Routes>
       </MainLayout>

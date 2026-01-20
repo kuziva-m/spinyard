@@ -162,7 +162,8 @@ export default function VisitUs() {
               </li>
               <li className="flex justify-between border-b border-white/10 pb-2">
                 <span>Saturday</span>
-                <span className="font-bold text-white">8:00 AM - 1:00 PM</span>
+                {/* UPDATED TIME HERE */}
+                <span className="font-bold text-white">8:00 AM - 2:00 PM</span>
               </li>
               <li className="flex justify-between pt-1">
                 <span>Sunday</span>

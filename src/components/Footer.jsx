@@ -117,7 +117,10 @@ export default function Footer() {
                 <span className="block mb-1 text-ash-grey-400">
                   Opening Hours:
                 </span>
-                Mon - Sat: 8:00am - 4:30pm
+                Mon - Fri: 8:00am - 4:30pm
+                <br />
+                {/* UPDATED TIME HERE */}
+                Sat: 8:00am - 2:00pm
                 <br />
                 Sun: Closed
               </li>
